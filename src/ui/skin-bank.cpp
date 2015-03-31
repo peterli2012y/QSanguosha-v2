@@ -287,6 +287,7 @@ QPixmap QSanRoomSkin::getProgressBarPixmap(int percentile) const
 QPixmap QSanRoomSkin::getCardMainPixmap(const QString &cardName, bool cache) const
 {
     if (cardName == "unknown") return getPixmap("handCardBack", QString(), true);
+    return QPixmap(":/card.png");
     QString name = cardName;
     if (ServerInfo.GameMode == "06_3v3" && name.startsWith("vs_"))
         name = name.mid(3);
@@ -331,6 +332,15 @@ QPixmap QSanRoomSkin::getGeneralPixmap(const QString &generalName, GeneralIconSi
     if (size == S_GENERAL_ICON_SIZE_CARD)
         return getCardMainPixmap(name);
     else {
+        switch (size) {
+        case S_GENERAL_ICON_SIZE_SMALL:
+        case S_GENERAL_ICON_SIZE_PHOTO_SECONDARY:
+        case S_GENERAL_ICON_SIZE_PHOTO_PRIMARY:
+            return QPixmap(":/full.png");
+        default:
+            return QPixmap(":/avatar.png");
+        }
+
         QString key = QString(S_SKIN_KEY_PLAYER_GENERAL_ICON).arg(size).arg(name);
         if (isImageKeyDefined(key))
             return getPixmap(key);

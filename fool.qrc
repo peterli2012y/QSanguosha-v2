@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>avatar.png</file>
+        <file>card.png</file>
+        <file>full.png</file>
+    </qresource>
+</RCC>

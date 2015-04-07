@@ -1567,7 +1567,7 @@ sgs.ai_skill_invoke.naman = function(self, data)
 end
 
 --chengyi
-
+sgs.ai_skill_invoke.benyu = true
 --黄巾雷使
 sgs.ai_view_as.fulu = function(card, player, card_place)
 	local suit = card:getSuitString()

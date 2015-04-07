@@ -1348,7 +1348,7 @@ class Lexue : public ViewAsSkill
 public:
     Lexue() :ViewAsSkill("lexue")
     {
-
+        response_or_use = true;
     }
 
     virtual int getEffectIndex(const ServerPlayer *, const Card *card) const
@@ -1391,10 +1391,7 @@ public:
             int card_id = player->getMark("lexue");
             const Card *card = Sanguosha->getCard(card_id);
             if (card->objectName() == "nullification") {
-                foreach (const Card *c, player->getHandcards() + player->getEquips()) {
-                    if (c->objectName() == "nullification" || c->getSuit() == card->getSuit())
-                        return true;
-                }
+                return !player->isKongcheng() || !player->getHandPile().isEmpty()
             }
         }
         return false;

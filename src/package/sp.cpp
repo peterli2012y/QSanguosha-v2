@@ -2437,39 +2437,6 @@ private:
     }
 };
 
-BenyuCard::BenyuCard()
-{
-    target_fixed = true;
-}
-
-void BenyuCard::use(Room *, ServerPlayer *, QList<ServerPlayer *> &) const
-{
-    // dummy
-}
-
-class BenyuViewAsSkill : public ViewAsSkill
-{
-public:
-    BenyuViewAsSkill() : ViewAsSkill("benyu")
-    {
-        response_pattern = "@@benyu";
-    }
-
-    virtual bool viewFilter(const QList<const Card *> &, const Card *to_select) const
-    {
-        return !to_select->isEquipped();
-    }
-
-    virtual const Card *viewAs(const QList<const Card *> &cards) const
-    {
-        if (cards.length() < Self->getMark("benyu"))
-            return NULL;
-        BenyuCard *card = new BenyuCard;
-        card->addSubcards(cards);
-        return card;
-    }
-};
-
 class Benyu : public MasochismSkill
 {
 public:
@@ -2491,10 +2458,8 @@ public:
             room->broadcastSkillInvoke(objectName(), 1);
             room->drawCards(target, qMin(5, from_handcard_num) - handcard_num, objectName());
         } else if (handcard_num > from_handcard_num) {
-            room->setPlayerMark(target, objectName(), from_handcard_num + 1);
-            if (room->askForUseCard(target, "@@benyu",  // I think we can use askForDiscard here, better than askForUseCard??
-                QString("@benyu-discard::%1:%2").arg(damage.from->objectName()).arg(from_handcard_num + 1),
-                -1, Card::MethodDiscard))
+            if (room->askForDiscard(target, objectName(), from_handcard_num + 1, handcard_num, false, true, 
+                QString("@benyu-discard::%1:%2").arg(damage.from->objectName()).arg(from_handcard_num + 1))
                 room->damage(DamageStruct(objectName(), target, damage.from));
         }
         return;
